@@ -25,6 +25,9 @@ dependencies {
 
     // Use JUnit test framework
     testCompile 'junit:junit:4.12'
+
+    // Google Guice
+    compile 'com.google.inject:guice:4.1.0'
 }
 
 // Define the main class for the application

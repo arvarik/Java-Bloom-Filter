@@ -63,7 +63,7 @@ set CMD_LINE_ARGS=%*
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\error_prone_annotations-2.0.18.jar;%APP_HOME%\lib\jsr305-1.3.9.jar;%APP_HOME%\lib\animal-sniffer-annotations-1.14.jar;%APP_HOME%\lib\j2objc-annotations-1.1.jar;%APP_HOME%\lib\Java-Bloom-Filter.jar;%APP_HOME%\lib\guava-22.0.jar
+set CLASSPATH=%APP_HOME%\lib\error_prone_annotations-2.0.18.jar;%APP_HOME%\lib\jsr305-1.3.9.jar;%APP_HOME%\lib\animal-sniffer-annotations-1.14.jar;%APP_HOME%\lib\javax.inject-1.jar;%APP_HOME%\lib\aopalliance-1.0.jar;%APP_HOME%\lib\guice-4.1.0.jar;%APP_HOME%\lib\j2objc-annotations-1.1.jar;%APP_HOME%\lib\Java-Bloom-Filter.jar;%APP_HOME%\lib\guava-22.0.jar
 
 @rem Execute Java-Bloom-Filter
 "%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %JAVA_BLOOM_FILTER_OPTS%  -classpath "%CLASSPATH%" App %CMD_LINE_ARGS%

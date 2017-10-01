@@ -1,10 +1,8 @@
-
 import com.google.common.base.Charsets;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 
-import java.util.BitSet;
 
 public class Main {
 
@@ -17,7 +15,7 @@ public class Main {
                 .putString("Arvind", Charsets.UTF_8)
                 .hash();
 
-        System.out.println("Hash1 of 'Arvind' as int (SEED 2): " + hc.asInt());
+        System.out.printf("Hash1 of 'Arvind' as int (SEED 2): %d\n\n", hc.asInt());
 
 
     }

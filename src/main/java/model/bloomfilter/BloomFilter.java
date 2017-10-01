@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-interface BloomFilter {
+public interface BloomFilter {
 
     /**
      * Checks the bloom filter to see status of key

@@ -10,7 +10,7 @@ import model.hflist.HashFunctionList;
 
 // TODO IMPLEMENT REST OF THE FUNCTIONS FOR BLOOM FILTER!
 
-class DefaultBloomFilter implements BloomFilter {
+public class DefaultBloomFilter implements BloomFilter {
 
     private int bloomFilterSize;    // Referred to in stats as m
     private int numHashFunctions;   // Referred to in stats as k
@@ -21,7 +21,7 @@ class DefaultBloomFilter implements BloomFilter {
 
     private HashFunctionList hashFunctionList;  // List of hash functions
 
-    DefaultBloomFilter() {
+    public DefaultBloomFilter() {
         this.bloomFilterSize = 100;
         this.numHashFunctions = 2;
         this.numTerms = 0;
@@ -32,11 +32,12 @@ class DefaultBloomFilter implements BloomFilter {
     }
 
 
-    DefaultBloomFilter(int bloomFilterSize, int numHashFunctions) {
+    public DefaultBloomFilter(int bloomFilterSize, int numHashFunctions) {
         this.bloomFilterSize = bloomFilterSize;
         this.numHashFunctions = numHashFunctions;
 
         this.bitVector = new BitSet(this.bloomFilterSize);
+        this.hashFunctionList = new DefaultHashFunctionList(this.numHashFunctions);
     }
 
 

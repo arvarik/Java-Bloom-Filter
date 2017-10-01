@@ -13,11 +13,11 @@ public class DefaultHashFunctionList implements HashFunctionList {
     private ArrayList<HashFunction> hashFunctionList;
 
     /**
-     * Default constructor for HashFunctionList with size set to 3
+     * Default constructor for HashFunctionList with size set to 2
      */
     public DefaultHashFunctionList() {
         this.hashFunctionList = new ArrayList<>();
-        setHashFunctionList(this.hashFunctionList, 3);
+        setHashFunctionList(this.hashFunctionList, 2);
     }
 
     /**
@@ -30,6 +30,11 @@ public class DefaultHashFunctionList implements HashFunctionList {
     }
 
 
+    /**
+     * Function to instantiate all HashFunction objects in list
+     * @param hashFunctionList Empty HashFunction List
+     * @param size Number of hash functions to add to the list
+     */
     private void setHashFunctionList(ArrayList<HashFunction> hashFunctionList, int size) {
         for (int i = 0; i < size; i++) {
             Random rn = new Random();

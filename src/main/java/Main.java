@@ -3,10 +3,8 @@ import com.google.common.hash.HashCode;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 
-import model.hflist.HashFunctionList;
-import model.hflist.DefaultHashFunctionList;
 
-import java.util.ArrayList;
+
 
 public class Main {
 
@@ -20,6 +18,7 @@ public class Main {
                 .hash();
 
         System.out.printf("Hash1 of 'Arvind' as int (SEED 2): %d\n\n", hc.asInt());
+
 
 
     }

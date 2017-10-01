@@ -5,6 +5,10 @@ import java.util.BitSet;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import model.hflist.DefaultHashFunctionList;
+import model.hflist.HashFunctionList;
+
+// TODO IMPLEMENT REST OF THE FUNCTIONS FOR BLOOM FILTER!
 
 class DefaultBloomFilter implements BloomFilter {
 
@@ -15,7 +19,7 @@ class DefaultBloomFilter implements BloomFilter {
     private BitSet bitVector;       // Bit vector of bloomfilter
     private HashSet termSet;        // Strictly for appearance, bloomfilter does not keep actual terms
 
-
+    private HashFunctionList hashFunctionList;  // List of hash functions
 
     DefaultBloomFilter() {
         this.bloomFilterSize = 100;
@@ -24,14 +28,15 @@ class DefaultBloomFilter implements BloomFilter {
 
         this.bitVector = new BitSet(this.bloomFilterSize);
         this.termSet = new HashSet();
-
+        this.hashFunctionList = new DefaultHashFunctionList();
     }
 
 
     DefaultBloomFilter(int bloomFilterSize, int numHashFunctions) {
         this.bloomFilterSize = bloomFilterSize;
         this.numHashFunctions = numHashFunctions;
-        this.numTerms = 0;
+
+        this.bitVector = new BitSet(this.bloomFilterSize);
     }
 
 
@@ -118,10 +123,10 @@ class DefaultBloomFilter implements BloomFilter {
     /**
      * Returns the number of terms in the bloomfilter
      *
-     * @return
+     * @return Number of terms in the hash set
      */
     public int getNumTerms() {
-        return 0;
+        return this.numTerms;
     }
 
 

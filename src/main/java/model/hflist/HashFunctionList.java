@@ -1,4 +1,11 @@
-package mode.hflist;
+package model.hflist;
+
+import java.util.ArrayList;
 
 public interface HashFunctionList {
+
+
+
+
+
 }

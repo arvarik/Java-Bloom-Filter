@@ -45,10 +45,24 @@ interface BloomFilter {
 
 
     /**
+     * Sets length of the bloomfilter
+     * @param size length of bloomfilter
+     */
+    void setBloomFilterSize(int size);
+
+
+    /**
      * Returns total number of hash functions applied to each string
      * @return Number of hash functions
      */
     int getNumHashFunctions();
+
+
+    /**
+     * Number of hashes to be performed on each term
+     * @param hashes number of hashes
+     */
+    void setNumHashFunctions(int hashes);
 
 
     /**

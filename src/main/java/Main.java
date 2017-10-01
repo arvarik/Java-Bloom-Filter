@@ -1,7 +1,25 @@
 
+import com.google.common.base.Charsets;
+import com.google.common.hash.HashCode;
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
 
+import java.util.BitSet;
 
 public class Main {
 
+
+    public static void main(String[] args) {
+
+        HashFunction hf = Hashing.murmur3_32(2);
+
+        HashCode hc = hf.newHasher()
+                .putString("Arvind", Charsets.UTF_8)
+                .hash();
+
+        System.out.println("Hash1 of 'Arvind' as int (SEED 2): " + hc.asInt());
+
+
+    }
 
 }

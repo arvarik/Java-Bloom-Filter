@@ -8,17 +8,30 @@ import java.util.HashSet;
 
 class DefaultBloomFilter implements BloomFilter {
 
-    int bloomFilterSize;    // Referred to in stats as m
-    int numTerms;           // Referred to in stats as n
-    int numHashFunctions;   // Referred to in stats as k
+    private int bloomFilterSize;    // Referred to in stats as m
+    private int numHashFunctions;   // Referred to in stats as k
+    private int numTerms;           // Referred to in stats as n
 
-    BitSet bitVector;       // Bit vector of bloomfilter
-
+    private BitSet bitVector;       // Bit vector of bloomfilter
+    private HashSet termSet;        // Strictly for appearance, bloomfilter does not keep actual terms
 
 
 
     DefaultBloomFilter() {
+        this.bloomFilterSize = 100;
+        this.numHashFunctions = 2;
+        this.numTerms = 0;
 
+        this.bitVector = new BitSet(this.bloomFilterSize);
+        this.termSet = new HashSet();
+
+    }
+
+
+    DefaultBloomFilter(int bloomFilterSize, int numHashFunctions) {
+        this.bloomFilterSize = bloomFilterSize;
+        this.numHashFunctions = numHashFunctions;
+        this.numTerms = 0;
     }
 
 
@@ -75,12 +88,30 @@ class DefaultBloomFilter implements BloomFilter {
 
 
     /**
+     * Sets length of the bloomfilter
+     * @param size length of bloomfilter
+     */
+    public void setBloomFilterSize(int size) {
+
+    }
+
+
+    /**
      * Returns total number of hash functions applied to each string
      *
      * @return Number of hash functions
      */
     public int getNumHashFunctions() {
         return 0;
+    }
+
+
+    /**
+     * Number of hashes to be performed on each term
+     * @param hashes number of hashes
+     */
+    public void setNumHashFunctions(int hashes) {
+
     }
 
 

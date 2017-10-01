@@ -1,4 +1,6 @@
 package model.hflist;
 
-public class DefaultHashFunctionList {
+public class DefaultHashFunctionList implements HashFunctionList {
+
+
 }

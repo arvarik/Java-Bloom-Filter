@@ -1,13 +1,14 @@
-package model.bloomfilter;
+package model.hflist;
 
-// TODO Implement BF Test
+// TODO Implement HFList Test
 
 import java.util.ArrayList;
 
-public class BloomFilterTest {
 
-    private BloomFilter bloomFilter = new DefaultBloomFilter(256, 3);
-    private BloomFilter defaultBloomFilter = new DefaultBloomFilter();
+public class HashFunctionListTest {
+
+    private HashFunctionList hashFunctionList = new DefaultHashFunctionList(5);
+    private HashFunctionList defaultHashFunctionList = new DefaultHashFunctionList();
 
     private static void printArrayList(ArrayList<Integer> list) {
         int length = list.size();
@@ -21,4 +22,5 @@ public class BloomFilterTest {
 
         System.out.println(printList);
     }
+
 }

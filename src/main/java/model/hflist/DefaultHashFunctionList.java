@@ -15,25 +15,23 @@ public class DefaultHashFunctionList implements HashFunctionList {
     /**
      * Default constructor for HashFunctionList with size set to 3
      */
-    DefaultHashFunctionList() {
-        this.hashFunctionList = new ArrayList<>(3);
-        setHashFunctionList(this.hashFunctionList);
+    public DefaultHashFunctionList() {
+        this.hashFunctionList = new ArrayList<>();
+        setHashFunctionList(this.hashFunctionList, 3);
     }
 
     /**
      * Constructor for HashFunctionList with size parameter
      * @param size
      */
-    DefaultHashFunctionList(int size) {
-        this.hashFunctionList = new ArrayList<>(size);
-        setHashFunctionList(this.hashFunctionList);
+    public DefaultHashFunctionList(int size) {
+        this.hashFunctionList = new ArrayList<>();
+        setHashFunctionList(this.hashFunctionList, size);
     }
 
 
-    private void setHashFunctionList(ArrayList<HashFunction> hashFunctionList) {
-        int length = hashFunctionList.size();
-
-        for (int i = 0; i < length; i++) {
+    private void setHashFunctionList(ArrayList<HashFunction> hashFunctionList, int size) {
+        for (int i = 0; i < size; i++) {
             Random rn = new Random();
             hashFunctionList.add(Hashing.murmur3_32(rn.nextInt()));
         }
@@ -56,8 +54,8 @@ public class DefaultHashFunctionList implements HashFunctionList {
      * @param length New HashFunctionList instance length
      */
     public void setNewHashFunctionList(int length) {
-        this.hashFunctionList = new ArrayList<>(length);
-        setHashFunctionList(this.hashFunctionList);
+        this.hashFunctionList = new ArrayList<>();
+        setHashFunctionList(this.hashFunctionList, length);
     }
 
 

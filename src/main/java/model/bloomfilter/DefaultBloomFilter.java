@@ -35,9 +35,9 @@ public class DefaultBloomFilter implements BloomFilter {
         this.numHashFunctions = 10;
         this.numTerms = 0;
 
-        this.bitVector = new BitSet(this.bloomFilterSize);
-        this.termSet = new HashSet();
+        this.bitVector = new BitSet(1400);
         this.hashFunctionList = new DefaultHashFunctionList();
+        this.termSet = new HashSet();
     }
 
 
@@ -50,8 +50,9 @@ public class DefaultBloomFilter implements BloomFilter {
         this.bloomFilterSize = bloomFilterSize;
         this.numHashFunctions = numHashFunctions;
 
-        this.bitVector = new BitSet(this.bloomFilterSize);
-        this.hashFunctionList = new DefaultHashFunctionList(this.numHashFunctions);
+        this.bitVector = new BitSet(bloomFilterSize);
+        this.hashFunctionList = new DefaultHashFunctionList(numHashFunctions);
+        this.termSet = new HashSet();
     }
 
 
@@ -71,7 +72,6 @@ public class DefaultBloomFilter implements BloomFilter {
         ArrayList optimalValues = new ArrayList();
 
         double optimalHashFunctions = -1 * DoubleMath.log2(desiredFalsePositive, RoundingMode.FLOOR);
-
         double optimalBFSize = 1.44 * optimalHashFunctions * expectedNumTerms;
 
         optimalValues.add(optimalBFSize);
@@ -80,24 +80,48 @@ public class DefaultBloomFilter implements BloomFilter {
         return optimalValues;
     }
 
-    /** !@#$%^&*()
+    /**
      * Checks the bloom filter to see status of key
      *
      * @param key Term to check in the bloomfilter
      * @return Response if key was probably in the set or definitely not in the set
      */
     public String checkTerm(String key) {
-        return null;
+
+        ArrayList<Integer> bitIndices = getBitIndices(key);
+
+        boolean inTheSet = true;
+
+        for (int index : bitIndices) {
+            if (!bitVector.get(index)) { inTheSet = false; }
+        }
+
+        if (inTheSet) {
+            return "The term '" + key + "' is probably in the set.";
+        }
+
+        return "The term '" + key + "' is definitely not in the set, you can add it in.";
+
+        /** Change return to something objective like boolean or int */
     }
 
 
-    /** !@#$%^&*()
+    /**
      * Adds a term to the bloom filter
      *
      * @param key Term to add into the bloomfilter
      */
     public void addTerm(String key) {
 
+        ArrayList<Integer> bitIndices = getBitIndices(key);
+
+        for (int index : bitIndices) {
+            this.bitVector.set(index);
+        }
+
+        termSet.add(key);
+
+        numTerms++;
     }
 
 
@@ -108,10 +132,7 @@ public class DefaultBloomFilter implements BloomFilter {
      * @return List of bit indices corresponding to term
      */
     public ArrayList<Integer> getBitIndices(String key) {
-
-        ArrayList<Integer> bitIndices = new ArrayList<>();
-
-        return null;
+        return this.hashFunctionList.getBoundedIntHashListFromString(key, this.bloomFilterSize);
     }
 
 
@@ -121,7 +142,7 @@ public class DefaultBloomFilter implements BloomFilter {
      * @return Hash map of statistic name and its associated value
      */
     public HashMap<String, String> getBloomFilterStats() {
-
+        //TODO Write list of good stats and implement
         HashMap<String, String> stats = new HashMap<>();
 
 
@@ -147,15 +168,6 @@ public class DefaultBloomFilter implements BloomFilter {
     public int getNumHashFunctions() { return numHashFunctions; }
 
 
-    /** !@#$%^&*()
-     * Number of hashes to be performed on each term
-     * @param hashes number of hashes
-     */
-    public void setNumHashFunctions(int hashes) {
-
-    }
-
-
     /**
      * Returns the number of terms in the bloomfilter
      *
@@ -174,6 +186,9 @@ public class DefaultBloomFilter implements BloomFilter {
     public HashSet<String> getTerms() {
         return this.termSet;
     }
+
+
+    // TODO Get termSet? Also print out term set with another helper method for printing out sets in testing
 
 
     /**

@@ -1,8 +1,9 @@
 package model.bloomfilter;
 
-// TODO Implement BF Test
+// TODO Implement tests for BF
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BloomFilterTest {
 
@@ -20,5 +21,10 @@ public class BloomFilterTest {
         printList += Integer.toString(list.get(length - 1)) + "}";
 
         System.out.println(printList);
+    }
+
+    private static void printHashMap(HashMap<String, String> hashMap) {
+
+        //TODO Hashmap print function
     }
 }

@@ -61,13 +61,6 @@ public interface BloomFilter {
 
 
     /**
-     * Number of hashes to be performed on each term
-     * @param hashes number of hashes
-     */
-    void setNumHashFunctions(int hashes);
-
-
-    /**
      * Returns the number of terms in the bloomfilter
      * @return
      */

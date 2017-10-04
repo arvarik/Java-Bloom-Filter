@@ -6,6 +6,8 @@ import com.google.common.hash.Hashing;
 import model.bloomfilter.BloomFilter;
 import model.bloomfilter.DefaultBloomFilter;
 
+import java.util.ArrayList;
+
 
 public class Main {
 
@@ -25,8 +27,28 @@ public class Main {
         // Testing out if BloomFilter constructors are working
         BloomFilter bloomFilter = new DefaultBloomFilter(256, 3);
 
-        System.out.println(bloomFilter.getOptimalSizeAndNumHfs(100, .001).get(0));
-        System.out.println(bloomFilter.getNumTerms());
+        bloomFilter.addTerm("Arvind");
+        bloomFilter.addTerm("Arikatla");
+        bloomFilter.addTerm("Hello");
+
+        System.out.println(bloomFilter.checkTerm("Arvind"));
+        System.out.println(bloomFilter.checkTerm("HI"));
+        System.out.println(bloomFilter.checkTerm("HellO"));
+        System.out.println(bloomFilter.checkTerm("Hello"));
+
+    }
+
+    private static void printArrayList(ArrayList<Integer> list) {
+        int length = list.size();
+        String printList = "{";
+
+        for (int i = 0; i < length - 1; i++) {
+            printList += Integer.toString(list.get(i)) + ", ";
+        }
+
+        printList += Integer.toString(list.get(length - 1)) + "}";
+
+        System.out.println(printList);
     }
 
 

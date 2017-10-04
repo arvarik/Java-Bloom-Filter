@@ -1,8 +1,9 @@
 package model.hflist;
 
-// TODO Implement HFList Test
+// TODO Implement tests for HFList
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class HashFunctionListTest {
@@ -23,4 +24,8 @@ public class HashFunctionListTest {
         System.out.println(printList);
     }
 
+    private static void printHashMap(HashMap<String, String> hashMap) {
+
+        //TODO Hashmap print function
+    }
 }

@@ -96,10 +96,12 @@ public class DefaultHashFunctionList implements HashFunctionList {
         ArrayList<Integer> intHashList = new ArrayList<>();
 
         for (HashFunction hf : this.hashFunctionList) {
-            intHashList.add(hf.newHasher()
-                    .putString(key, Charsets.UTF_8)
-                    .hash()
-                    .asInt() % bound);
+            int hash = hf.newHasher()
+                         .putString(key, Charsets.UTF_8)
+                         .hash()
+                         .asInt();
+            hash = (hash < 0) ? -1 * hash % bound : hash % bound;
+            intHashList.add(hash);
         }
 
         return intHashList;

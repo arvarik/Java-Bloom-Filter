@@ -25,8 +25,8 @@ public class Main {
         // Testing out if BloomFilter constructors are working
         BloomFilter bloomFilter = new DefaultBloomFilter(256, 3);
 
+        System.out.println(bloomFilter.getOptimalSizeAndNumHfs(100, .001).get(0));
         System.out.println(bloomFilter.getNumTerms());
-
     }
 
 

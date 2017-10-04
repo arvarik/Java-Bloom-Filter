@@ -8,6 +8,15 @@ import java.util.HashMap;
 public interface BloomFilter {
 
     /**
+     * Method to help user construct an optimal bloomfilter
+     * @param expectedNumTerms Expected number of terms user's bloomfilter will contain
+     * @param desiredFalsePositive Desired false positive ratio r where 0 < r < 1
+     * @return A list of size two with optimal bloomfilter size and number of hash functions
+     */
+    ArrayList<Integer> getOptimalSizeAndNumHfs(int expectedNumTerms, double desiredFalsePositive);
+
+
+    /**
      * Checks the bloom filter to see status of key
      * @param key Term to check in the bloomfilter
      * @return Response if key was probably in the set or definitely not in the set
@@ -42,13 +51,6 @@ public interface BloomFilter {
      * @return Size of bloom filter
      */
     int getBloomFilterSize();
-
-
-    /**
-     * Sets length of the bloomfilter
-     * @param size length of bloomfilter
-     */
-    void setBloomFilterSize(int size);
 
 
     /**

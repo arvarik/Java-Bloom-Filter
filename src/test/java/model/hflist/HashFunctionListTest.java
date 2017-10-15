@@ -1,31 +1,45 @@
 package model.hflist;
 
-// TODO Implement tests for HFList
-
-import java.util.ArrayList;
-import java.util.HashMap;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 
 public class HashFunctionListTest {
 
-    private HashFunctionList hashFunctionList = new DefaultHashFunctionList(5);
-    private HashFunctionList defaultHashFunctionList = new DefaultHashFunctionList();
+    private HashFunctionList hashFunctionList;
+    private HashFunctionList defaultHashFunctionList;
 
-    private static void printArrayList(ArrayList<Integer> list) {
-        int length = list.size();
-        String printList = "{";
-
-        for (int i = 0; i < length - 1; i++) {
-            printList += Integer.toString(list.get(i)) + ", ";
-        }
-
-        printList += Integer.toString(list.get(length - 1)) + "}";
-
-        System.out.println(printList);
+    @Before
+    public void beforeTestSetup() {
+        hashFunctionList = new DefaultHashFunctionList(5);
+        defaultHashFunctionList = new DefaultHashFunctionList();
     }
 
-    private static void printHashMap(HashMap<String, String> hashMap) {
+    @Test
+    public void testHashFunctionListConstructor_getMethods() {
+        assertEquals(2, defaultHashFunctionList.getNumHashes());
+        assertEquals(5, hashFunctionList.getNumHashes());
+    }
 
-        //TODO Hashmap print function
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructor_whenIllegalSize_throwIllegalArg() {
+        new DefaultHashFunctionList(0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testHashFunctionList_whenIllegalKeyGetIntHashList_throwIllegalArg() {
+        hashFunctionList.getIntHashListFromString(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testHashFunctionList_whenIllegalKeyGetBoundedIntHashList_throwIllegalArg() {
+        hashFunctionList.getBoundedIntHashListFromString(null, 100);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testHashFunctionList_whenIllegalBoundGetBoundedIntHashList_throwIllegalArg() {
+        hashFunctionList.getBoundedIntHashListFromString("Test", 4);
     }
 }

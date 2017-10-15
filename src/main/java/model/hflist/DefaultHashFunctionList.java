@@ -22,7 +22,7 @@ public class DefaultHashFunctionList implements HashFunctionList {
 
     /**
      * Constructor for HashFunctionList with size parameter
-     * @param size
+     * @param size Number of hash functions to be used
      */
     public DefaultHashFunctionList(int size) {
         this.hashFunctionList = new ArrayList<>();
@@ -36,6 +36,10 @@ public class DefaultHashFunctionList implements HashFunctionList {
      * @param size Number of hash functions to add to the list
      */
     private void setHashFunctionList(ArrayList<HashFunction> hashFunctionList, int size) {
+        if (size < 1) {
+            throw new IllegalArgumentException("Number of hash functions should be greater than 0");
+        }
+
         for (int i = 0; i < size; i++) {
             Random rn = new Random();
             hashFunctionList.add(Hashing.murmur3_32(rn.nextInt()));
@@ -72,6 +76,10 @@ public class DefaultHashFunctionList implements HashFunctionList {
      */
     public ArrayList<Integer> getIntHashListFromString(String key) {
 
+        if (key == null) {
+            throw new IllegalArgumentException("Key must not be null");
+        }
+
         ArrayList<Integer> intHashList = new ArrayList<>();
 
         for (HashFunction hf : this.hashFunctionList) {
@@ -92,6 +100,14 @@ public class DefaultHashFunctionList implements HashFunctionList {
      * @return List of bounded int hashes
      */
     public ArrayList<Integer> getBoundedIntHashListFromString(String key, int bound) {
+
+        if (key == null) {
+            throw new IllegalArgumentException("Key must not be null");
+        }
+
+        if (bound < 5) {
+            throw new IllegalArgumentException("Bound must be 5 or greater");
+        }
 
         ArrayList<Integer> intHashList = new ArrayList<>();
 

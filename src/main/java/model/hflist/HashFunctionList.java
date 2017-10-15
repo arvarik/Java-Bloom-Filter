@@ -6,7 +6,7 @@ public interface HashFunctionList {
 
     /**
      * Get number of hash functions in the list
-     * @return
+     * @return Number of hash functions in the list
      */
     int getNumHashes();
 

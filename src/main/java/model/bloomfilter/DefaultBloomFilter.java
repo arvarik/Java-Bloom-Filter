@@ -37,7 +37,7 @@ public class DefaultBloomFilter implements BloomFilter {
 
         this.bitVector = new BitSet(1400);
         this.hashFunctionList = new DefaultHashFunctionList();
-        this.termSet = new HashSet();
+        this.termSet = new HashSet<String>();
     }
 
 
@@ -47,12 +47,21 @@ public class DefaultBloomFilter implements BloomFilter {
      * @param numHashFunctions Number of hash functions each term should run through
      */
     public DefaultBloomFilter(int bloomFilterSize, int numHashFunctions) {
+
+        if (bloomFilterSize < 5) {
+            throw new IllegalArgumentException("BloomFilter size must be 5 or greater");
+        }
+
+        if (numHashFunctions < 1) {
+            throw new IllegalArgumentException("There must be at least one hash function");
+        }
+
         this.bloomFilterSize = bloomFilterSize;
         this.numHashFunctions = numHashFunctions;
 
         this.bitVector = new BitSet(bloomFilterSize);
         this.hashFunctionList = new DefaultHashFunctionList(numHashFunctions);
-        this.termSet = new HashSet();
+        this.termSet = new HashSet<String>();
     }
 
 
@@ -65,8 +74,12 @@ public class DefaultBloomFilter implements BloomFilter {
      */
     public ArrayList<Integer> getOptimalSizeAndNumHfs(int expectedNumTerms, double desiredFalsePositive) {
 
+        if (expectedNumTerms < 5) {
+            throw new IllegalArgumentException("Expected number of terms must be 5 or greater");
+        }
+
         if (desiredFalsePositive <= 0 || desiredFalsePositive >= 1) {
-            throw new ArithmeticException("False positive rate R must be 0 < R < 1.");
+            throw new IllegalArgumentException("False positive rate R must be 0 < R < 1.");
         }
 
         ArrayList optimalValues = new ArrayList();
@@ -86,7 +99,9 @@ public class DefaultBloomFilter implements BloomFilter {
      * @param key Term to check in the bloomfilter
      * @return Response if key was probably in the set or definitely not in the set
      */
-    public String checkTerm(String key) {
+    public boolean inTheSet(String key) {
+
+        if (key == null) { return false; }
 
         ArrayList<Integer> bitIndices = getBitIndices(key);
 
@@ -96,13 +111,20 @@ public class DefaultBloomFilter implements BloomFilter {
             if (!bitVector.get(index)) { inTheSet = false; }
         }
 
-        if (inTheSet) {
+        return inTheSet;
+    }
+
+    /**
+     * Checks the bloom filter to see status of key
+     * @param key Term to check in the bloomfilter
+     * @return String response if key was probably in the set or definitely not in the set
+     */
+    public String checkTerm(String key) {
+        if (inTheSet(key)) {
             return "The term '" + key + "' is probably in the set.";
+        } else {
+            return "The term '" + key + "' is definitely not in the set, you can add it in.";
         }
-
-        return "The term '" + key + "' is definitely not in the set, you can add it in.";
-
-        /** Change return to something objective like boolean or int */
     }
 
 
@@ -112,6 +134,8 @@ public class DefaultBloomFilter implements BloomFilter {
      * @param key Term to add into the bloomfilter
      */
     public void addTerm(String key) {
+
+        if (key == null) { return; }
 
         ArrayList<Integer> bitIndices = getBitIndices(key);
 
@@ -132,6 +156,9 @@ public class DefaultBloomFilter implements BloomFilter {
      * @return List of bit indices corresponding to term
      */
     public ArrayList<Integer> getBitIndices(String key) {
+        if (key == null) {
+            throw new IllegalArgumentException("String cannot be null");
+        }
         return this.hashFunctionList.getBoundedIntHashListFromString(key, this.bloomFilterSize);
     }
 
@@ -188,9 +215,6 @@ public class DefaultBloomFilter implements BloomFilter {
     }
 
 
-    // TODO Get termSet? Also print out term set with another helper method for printing out sets in testing
-
-
     /**
      * Clears the bloom filter of all strings
      */
@@ -199,5 +223,4 @@ public class DefaultBloomFilter implements BloomFilter {
         this.bitVector.clear();
         this.termSet.clear();
     }
-
 }

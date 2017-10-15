@@ -19,7 +19,15 @@ public interface BloomFilter {
     /**
      * Checks the bloom filter to see status of key
      * @param key Term to check in the bloomfilter
-     * @return Response if key was probably in the set or definitely not in the set
+     * @return Response if key was probably in the set (1) or definitely not in the set (0)
+     */
+    boolean inTheSet(String key);
+
+
+    /**
+     * Checks the bloom filter to see status of key
+     * @param key Term to check in the bloomfilter
+     * @return String response if key was probably in the set or definitely not in the set
      */
     String checkTerm(String key);
 
@@ -62,7 +70,7 @@ public interface BloomFilter {
 
     /**
      * Returns the number of terms in the bloomfilter
-     * @return
+     * @return Number of terms in the bloomfilter
      */
     int getNumTerms();
 

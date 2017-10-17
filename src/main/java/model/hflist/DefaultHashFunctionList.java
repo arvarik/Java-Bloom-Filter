@@ -1,6 +1,7 @@
 package model.hflist;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.google.common.base.Charsets;
@@ -8,9 +9,12 @@ import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 
 
+/**
+ * DefaultHashFunctionList uses the murmur32 hash function as its hash function
+ */
 public class DefaultHashFunctionList implements HashFunctionList {
 
-    private ArrayList<HashFunction> hashFunctionList;
+    private List<HashFunction> hashFunctionList;
 
     /**
      * Default constructor for HashFunctionList with size set to 2
@@ -35,13 +39,14 @@ public class DefaultHashFunctionList implements HashFunctionList {
      * @param hashFunctionList Empty HashFunction List
      * @param size Number of hash functions to add to the list
      */
-    private void setHashFunctionList(ArrayList<HashFunction> hashFunctionList, int size) {
+    private void setHashFunctionList(List<HashFunction> hashFunctionList, int size) {
         if (size < 1) {
             throw new IllegalArgumentException("Number of hash functions should be greater than 0");
         }
-
+        // TODO: REFACTOR! DefaultHashFunctionList has max size of all hash-functions, all diff types of hfs
+        // TODO: New class MurmurHashFunctionList which is exactly as this class is now
+        Random rn = new Random();
         for (int i = 0; i < size; i++) {
-            Random rn = new Random();
             hashFunctionList.add(Hashing.murmur3_32(rn.nextInt()));
         }
     }

@@ -1,10 +1,14 @@
 package model.bloomfilter;
 
 import java.math.RoundingMode;
+import java.util.List;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.HashMap;
+import java.util.Set;
 import java.util.BitSet;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
+
 
 import model.hflist.DefaultHashFunctionList;
 import model.hflist.HashFunctionList;
@@ -19,7 +23,7 @@ public class DefaultBloomFilter implements BloomFilter {
     private int numTerms;           // Referred to in stats as n
 
     private BitSet bitVector;       // Bit vector of bloomfilter
-    private HashSet termSet;        // Strictly for purposes of this project,
+    private Set<String> termSet;    // Strictly for purposes of this project,
                                     // actual bloomfilter does not keep terms
 
     private HashFunctionList hashFunctionList;  // List of hash functions
@@ -37,7 +41,7 @@ public class DefaultBloomFilter implements BloomFilter {
 
         this.bitVector = new BitSet(1400);
         this.hashFunctionList = new DefaultHashFunctionList();
-        this.termSet = new HashSet<String>();
+        this.termSet = new HashSet<>();
     }
 
 
@@ -61,7 +65,7 @@ public class DefaultBloomFilter implements BloomFilter {
 
         this.bitVector = new BitSet(bloomFilterSize);
         this.hashFunctionList = new DefaultHashFunctionList(numHashFunctions);
-        this.termSet = new HashSet<String>();
+        this.termSet = new HashSet<>();
     }
 
 
@@ -72,7 +76,7 @@ public class DefaultBloomFilter implements BloomFilter {
      * @param desiredFalsePositive Desired false positive ratio r where 0 < r < 1
      * @return A list of size two with optimal bloomfilter size and number of hash functions
      */
-    public ArrayList<Integer> getOptimalSizeAndNumHfs(int expectedNumTerms, double desiredFalsePositive) {
+    public List<Integer> getOptimalSizeAndNumHfs(int expectedNumTerms, double desiredFalsePositive) {
 
         if (expectedNumTerms < 5) {
             throw new IllegalArgumentException("Expected number of terms must be 5 or greater");
@@ -82,13 +86,13 @@ public class DefaultBloomFilter implements BloomFilter {
             throw new IllegalArgumentException("False positive rate R must be 0 < R < 1.");
         }
 
-        ArrayList optimalValues = new ArrayList();
+        List<Integer> optimalValues = new ArrayList<>();
 
         double optimalHashFunctions = -1 * DoubleMath.log2(desiredFalsePositive, RoundingMode.FLOOR);
         double optimalBFSize = 1.44 * optimalHashFunctions * expectedNumTerms;
 
-        optimalValues.add(optimalBFSize);
-        optimalValues.add(optimalHashFunctions);
+        optimalValues.add((int) optimalBFSize);
+        optimalValues.add((int) optimalHashFunctions);
 
         return optimalValues;
     }
@@ -103,7 +107,7 @@ public class DefaultBloomFilter implements BloomFilter {
 
         if (key == null) { return false; }
 
-        ArrayList<Integer> bitIndices = getBitIndices(key);
+        List<Integer> bitIndices = getBitIndices(key);
 
         boolean inTheSet = true;
 
@@ -137,10 +141,10 @@ public class DefaultBloomFilter implements BloomFilter {
 
         if (key == null) { return; }
 
-        ArrayList<Integer> bitIndices = getBitIndices(key);
+        List<Integer> bitIndices = getBitIndices(key);
 
         for (int index : bitIndices) {
-            this.bitVector.set(index);
+            bitVector.set(index);
         }
 
         termSet.add(key);
@@ -155,7 +159,7 @@ public class DefaultBloomFilter implements BloomFilter {
      * @param key Term to check in bloomfilter
      * @return List of bit indices corresponding to term
      */
-    public ArrayList<Integer> getBitIndices(String key) {
+    public List<Integer> getBitIndices(String key) {
         if (key == null) {
             throw new IllegalArgumentException("String cannot be null");
         }
@@ -168,9 +172,9 @@ public class DefaultBloomFilter implements BloomFilter {
      *
      * @return Hash map of statistic name and its associated value
      */
-    public HashMap<String, String> getBloomFilterStats() {
+    public Map<String, String> getBloomFilterStats() {
         //TODO Write list of good stats and implement
-        HashMap<String, String> stats = new HashMap<>();
+        Map<String, String> stats = new HashMap<>();
 
 
         return stats;
@@ -210,7 +214,7 @@ public class DefaultBloomFilter implements BloomFilter {
      *
      * @return Hash set of strings
      */
-    public HashSet<String> getTerms() {
+    public Set<String> getTerms() {
         return this.termSet;
     }
 

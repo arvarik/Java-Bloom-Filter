@@ -9,7 +9,5 @@ public class BloomFilterModule extends AbstractModule {
 
     }
 
-    // TODO Refactor code to use dependency injection/Guice
-
 
 }

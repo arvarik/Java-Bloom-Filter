@@ -1,8 +1,8 @@
 package model.bloomfilter;
 
-import java.util.HashSet;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 public interface BloomFilter {
@@ -13,7 +13,7 @@ public interface BloomFilter {
      * @param desiredFalsePositive Desired false positive ratio r where 0 < r < 1
      * @return A list of size two with optimal bloomfilter size and number of hash functions
      */
-    ArrayList<Integer> getOptimalSizeAndNumHfs(int expectedNumTerms, double desiredFalsePositive);
+    List<Integer> getOptimalSizeAndNumHfs(int expectedNumTerms, double desiredFalsePositive);
 
 
     /**
@@ -44,14 +44,14 @@ public interface BloomFilter {
      * @param key Term to check in bloomfilter
      * @return List of bit indices corresponding to term
      */
-    ArrayList<Integer> getBitIndices(String key);
+    List<Integer> getBitIndices(String key);
 
 
     /**
      * Gets a few statistics of the current bloomfilter
      * @return Hash map of statistic name and its associated value
      */
-    HashMap<String, String> getBloomFilterStats();
+    Map<String, String> getBloomFilterStats();
 
 
     /**
@@ -79,7 +79,7 @@ public interface BloomFilter {
      * Returns a hash set of terms in the bloomfilter
      * @return Hash set of strings
      */
-    HashSet<String> getTerms();
+    Set<String> getTerms();
 
 
     /**

@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 
-public class HashFunctionListTest {
+public class DefaultHashFunctionListTest {
 
     private HashFunctionList hashFunctionList;
     private HashFunctionList defaultHashFunctionList;

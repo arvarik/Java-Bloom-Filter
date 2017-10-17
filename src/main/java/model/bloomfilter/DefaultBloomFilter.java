@@ -22,6 +22,8 @@ public class DefaultBloomFilter implements BloomFilter {
     private int numHashFunctions;   // Referred to in stats as k
     private int numTerms;           // Referred to in stats as n
 
+    // TODO: Remove termSet here and create another class which extends this and uses termSet
+
     private BitSet bitVector;       // Bit vector of bloomfilter
     private Set<String> termSet;    // Strictly for purposes of this project,
                                     // actual bloomfilter does not keep terms
@@ -173,7 +175,7 @@ public class DefaultBloomFilter implements BloomFilter {
      * @return Hash map of statistic name and its associated value
      */
     public Map<String, String> getBloomFilterStats() {
-        //TODO Write list of good stats and implement
+        // TODO: Write list of good stats and implement
         Map<String, String> stats = new HashMap<>();
 
 

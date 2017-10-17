@@ -13,7 +13,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
-public class BloomFilterTest {
+public class DefaultBloomFilterTest {
 
     private BloomFilter bloomFilter;
     private BloomFilter defaultBloomFilter;

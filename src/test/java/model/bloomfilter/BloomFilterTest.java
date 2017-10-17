@@ -1,9 +1,10 @@
 package model.bloomfilter;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Collections;
 
 import org.junit.Test;
 import org.junit.Before;
@@ -134,7 +135,7 @@ public class BloomFilterTest {
         assertEquals(0, bloomFilter.getNumTerms());
     }
 
-    private static String printHashSet(HashSet<String> list) {
+    private static String printHashSet(Set<String> list) {
 
         if (list.size() == 0) {
             return "{}";

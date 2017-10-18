@@ -76,13 +76,6 @@ public interface BloomFilter {
 
 
     /**
-     * Returns a hash set of terms in the bloomfilter
-     * @return Hash set of strings
-     */
-    Set<String> getTerms();
-
-
-    /**
      * Clears the bloom filter of all strings
      */
     void clearBloomFilter();

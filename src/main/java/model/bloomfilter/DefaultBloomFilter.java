@@ -3,17 +3,17 @@ package model.bloomfilter;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.BitSet;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
 
 
 import model.hflist.DefaultHashFunctionList;
 import model.hflist.HashFunctionList;
+import model.hflist.HashType;
 
 import com.google.common.math.DoubleMath;
+import model.hflist.MurmurHashFunctionList;
 
 
 public class DefaultBloomFilter implements BloomFilter {
@@ -22,11 +22,7 @@ public class DefaultBloomFilter implements BloomFilter {
     private int numHashFunctions;   // Referred to in stats as k
     private int numTerms;           // Referred to in stats as n
 
-    // TODO: Remove termSet here and create another class which extends this and uses termSet
-
     private BitSet bitVector;       // Bit vector of bloomfilter
-    private Set<String> termSet;    // Strictly for purposes of this project,
-                                    // actual bloomfilter does not keep terms
 
     private HashFunctionList hashFunctionList;  // List of hash functions
 
@@ -43,17 +39,16 @@ public class DefaultBloomFilter implements BloomFilter {
 
         this.bitVector = new BitSet(1400);
         this.hashFunctionList = new DefaultHashFunctionList();
-        this.termSet = new HashSet<>();
     }
 
 
     /**
      * Main constructor where user can construct bloomfilter with desired bf size and num hfs
+     * Uses the default hash function list
      * @param bloomFilterSize Size of bloomfilter in bits
      * @param numHashFunctions Number of hash functions each term should run through
      */
     public DefaultBloomFilter(int bloomFilterSize, int numHashFunctions) {
-
         if (bloomFilterSize < 5) {
             throw new IllegalArgumentException("BloomFilter size must be 5 or greater");
         }
@@ -67,7 +62,63 @@ public class DefaultBloomFilter implements BloomFilter {
 
         this.bitVector = new BitSet(bloomFilterSize);
         this.hashFunctionList = new DefaultHashFunctionList(numHashFunctions);
-        this.termSet = new HashSet<>();
+    }
+
+
+    /**
+     * Default constructor for bloomfilter with size 1400 and 10 hash functions
+     * This is the optimal bloom filter for 1/1000 desired false positive ratio and
+     * expecting around 100 terms to be in the set
+     */
+    public DefaultBloomFilter(HashType hashType) {
+        this.bloomFilterSize = 1400;
+        this.numHashFunctions = 10;
+        this.numTerms = 0;
+
+        this.bitVector = new BitSet(1400);
+
+        switch (hashType) {
+            case DEFAULT:
+                this.hashFunctionList = new DefaultHashFunctionList();
+            case MURMUR:
+                this.hashFunctionList = new MurmurHashFunctionList();
+            default:
+                throw new IllegalArgumentException("HashType not valid");
+        }
+
+    }
+
+
+    /**
+     * Constructor where user can construct bloomfilter with desired bf size, num hfs, and hfl type
+     * @param bloomFilterSize Size of bloomfilter in bits
+     * @param numHashFunctions Number of hash functions each term should run through
+     * @param hashType The type of hash to use. Choices now are DEFAULT or MURMUR
+     */
+    public DefaultBloomFilter(int bloomFilterSize, int numHashFunctions, HashType hashType) {
+        if (bloomFilterSize < 5) {
+            throw new IllegalArgumentException("BloomFilter size must be 5 or greater");
+        }
+
+        if (numHashFunctions < 1) {
+            throw new IllegalArgumentException("There must be at least one hash function");
+        }
+
+        this.bloomFilterSize = bloomFilterSize;
+        this.numHashFunctions = numHashFunctions;
+
+        this.bitVector = new BitSet(bloomFilterSize);
+
+        switch (hashType) {
+            case DEFAULT:
+                this.hashFunctionList = new DefaultHashFunctionList(numHashFunctions);
+            case MURMUR:
+                this.hashFunctionList = new DefaultHashFunctionList(numHashFunctions);
+                // Actual code is below
+                // this.hashFunctionList = new MurmurHashFunctionList(numHashFunctions);
+            default:
+                throw new IllegalArgumentException("HashType not valid");
+        }
     }
 
 
@@ -79,7 +130,6 @@ public class DefaultBloomFilter implements BloomFilter {
      * @return A list of size two with optimal bloomfilter size and number of hash functions
      */
     public List<Integer> getOptimalSizeAndNumHfs(int expectedNumTerms, double desiredFalsePositive) {
-
         if (expectedNumTerms < 5) {
             throw new IllegalArgumentException("Expected number of terms must be 5 or greater");
         }
@@ -106,7 +156,6 @@ public class DefaultBloomFilter implements BloomFilter {
      * @return Response if key was probably in the set or definitely not in the set
      */
     public boolean inTheSet(String key) {
-
         if (key == null) { return false; }
 
         List<Integer> bitIndices = getBitIndices(key);
@@ -140,7 +189,6 @@ public class DefaultBloomFilter implements BloomFilter {
      * @param key Term to add into the bloomfilter
      */
     public void addTerm(String key) {
-
         if (key == null) { return; }
 
         List<Integer> bitIndices = getBitIndices(key);
@@ -148,8 +196,6 @@ public class DefaultBloomFilter implements BloomFilter {
         for (int index : bitIndices) {
             bitVector.set(index);
         }
-
-        termSet.add(key);
 
         numTerms++;
     }
@@ -212,21 +258,10 @@ public class DefaultBloomFilter implements BloomFilter {
 
 
     /**
-     * Returns a hash set of terms in the bloomfilter
-     *
-     * @return Hash set of strings
-     */
-    public Set<String> getTerms() {
-        return this.termSet;
-    }
-
-
-    /**
      * Clears the bloom filter of all strings
      */
     public void clearBloomFilter() {
         this.numTerms = 0;
         this.bitVector.clear();
-        this.termSet.clear();
     }
 }

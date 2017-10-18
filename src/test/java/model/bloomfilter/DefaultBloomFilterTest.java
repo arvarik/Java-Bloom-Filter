@@ -16,28 +16,10 @@ import static org.junit.Assert.assertTrue;
 public class DefaultBloomFilterTest {
 
     private BloomFilter bloomFilter;
-    private BloomFilter defaultBloomFilter;
 
     @Before
     public void beforeTestSetup() {
         bloomFilter = new DefaultBloomFilter(256, 3);
-        defaultBloomFilter = new DefaultBloomFilter();
-    }
-
-
-    @Test
-    public void testBloomFilterConstructor_getMethods() {
-        // Test all default constructor attributes
-        assertEquals(1400, defaultBloomFilter.getBloomFilterSize());
-        assertEquals(10, defaultBloomFilter.getNumHashFunctions());
-        assertEquals(0, defaultBloomFilter.getNumTerms());
-        assertEquals(new HashSet(), defaultBloomFilter.getTerms());
-
-        // Test all main constructor attributes
-        assertEquals(256, bloomFilter.getBloomFilterSize());
-        assertEquals(3, bloomFilter.getNumHashFunctions());
-        assertEquals(0, bloomFilter.getNumTerms());
-        assertEquals(new HashSet(), bloomFilter.getTerms());
     }
 
 
@@ -78,12 +60,10 @@ public class DefaultBloomFilterTest {
         bloomFilter.addTerm("Test3");
 
         assertEquals(3, bloomFilter.getNumTerms());
-        assertEquals("{Test1, Test2, Test3}", printHashSet(bloomFilter.getTerms()));
 
         bloomFilter.addTerm("Test4");
 
         assertEquals(4, bloomFilter.getNumTerms());
-        assertEquals("{Test1, Test2, Test3, Test4}", printHashSet(bloomFilter.getTerms()));
     }
 
     @Test
@@ -92,12 +72,10 @@ public class DefaultBloomFilterTest {
         bloomFilter.addTerm("Test2");
 
         assertEquals(2, bloomFilter.getNumTerms());
-        assertEquals("{Test1, Test2}", printHashSet(bloomFilter.getTerms()));
 
         bloomFilter.addTerm(null);
 
         assertEquals(2, bloomFilter.getNumTerms());
-        assertEquals("{Test1, Test2}", printHashSet(bloomFilter.getTerms()));
     }
 
 
@@ -131,31 +109,6 @@ public class DefaultBloomFilterTest {
 
         bloomFilter.clearBloomFilter();
 
-        assertEquals("{}", printHashSet(bloomFilter.getTerms()));
         assertEquals(0, bloomFilter.getNumTerms());
     }
-
-    private static String printHashSet(Set<String> list) {
-
-        if (list.size() == 0) {
-            return "{}";
-        }
-
-        List<String> sortedList = new ArrayList<>();
-
-        for (String item : list) {
-            sortedList.add(item);
-        }
-
-        Collections.sort(sortedList);
-
-        String printList = "{";
-
-        for (String item : sortedList) {
-            printList += item + ", ";
-        }
-
-        return printList.substring(0, printList.length() - 2) + "}";
-    }
-
 }

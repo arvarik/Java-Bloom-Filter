@@ -1,5 +1,5 @@
 package model.hflist;
 
-public class MurmurHashFunctionList {
+public class MurmurHashFunctionList extends DefaultHashFunctionList implements HashFunctionList {
 
 }

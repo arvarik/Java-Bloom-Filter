@@ -45,6 +45,7 @@ public class DefaultHashFunctionList implements HashFunctionList {
         }
         // TODO: REFACTOR! DefaultHashFunctionList has max size of all hash-functions, all diff types of hfs
         // TODO: New class MurmurHashFunctionList which is exactly as this class is now
+        // TODO: New class MurmurHashFunctionList which is exactly as this class is now
         Random rn = new Random();
         for (int i = 0; i < size; i++) {
             hashFunctionList.add(Hashing.murmur3_32(rn.nextInt()));

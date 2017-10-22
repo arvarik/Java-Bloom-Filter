@@ -12,6 +12,9 @@ apply plugin: 'java'
 // Apply the application plugin to add support for building an application
 apply plugin: 'application'
 
+// Apply jacoco plugin for test coverage
+apply plugin: 'jacoco'
+
 // In this section you declare where to find the dependencies of your project
 repositories {
     // Use jcenter for resolving your dependencies.
@@ -34,8 +37,30 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.9.1'
 }
 
+jacoco {
+    applyTo run
+}
 
+task applicationCodeCoverageReport(type:JacocoReport){
+    executionData run
+    sourceSets sourceSets.main
+}
 
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}
+
+test {
+    jacoco {
+        append = false
+        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+        classDumpDir = file("$buildDir/jacoco/classpathdumps")
+    }
+}
 
 // Define the main class for the application
 mainClassName = 'Main'

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="model.hflist.DefaultHashFunctionListTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2017-10-22T07:16:52" hostname="MacBook-Pro.local" time="0.002">
+  <properties/>
+  <testcase name="testConstructor_whenIllegalSize_throwIllegalArg" classname="model.hflist.DefaultHashFunctionListTest" time="0.0"/>
+  <testcase name="testHashFunctionList_whenIllegalKeyGetIntHashList_throwIllegalArg" classname="model.hflist.DefaultHashFunctionListTest" time="0.0"/>
+  <testcase name="testHashFunctionListConstructor_getMethods" classname="model.hflist.DefaultHashFunctionListTest" time="0.0"/>
+  <testcase name="testHashFunctionList_whenIllegalKeyGetBoundedIntHashList_throwIllegalArg" classname="model.hflist.DefaultHashFunctionListTest" time="0.0"/>
+  <testcase name="testHashFunctionList_whenIllegalBoundGetBoundedIntHashList_throwIllegalArg" classname="model.hflist.DefaultHashFunctionListTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

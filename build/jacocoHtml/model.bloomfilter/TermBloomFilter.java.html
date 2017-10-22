@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TermBloomFilter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Java-Bloom-Filter</a> &gt; <a href="index.source.html" class="el_package">model.bloomfilter</a> &gt; <span class="el_source">TermBloomFilter.java</span></div><h1>TermBloomFilter.java</h1><pre class="source lang-java linenums">package model.bloomfilter;
+
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * Exactly like the default bloomfilter except the TermBloomFilter keeps
+ * a set of the terms for displaying how a bloomfilter works
+ */
+public class TermBloomFilter extends DefaultBloomFilter implements BloomFilter {
+
+    private Set&lt;String&gt; termSet;
+
+    /**
+     * Default constructor for bloomfilter with size 1400 and 10 hash functions
+     * This is the optimal bloom filter for 1/1000 desired false positive ratio and
+     * expecting around 100 terms to be in the set
+     */
+    public TermBloomFilter() {
+<span class="fc" id="L20">        super();</span>
+<span class="fc" id="L21">        this.termSet = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L22">    }</span>
+
+
+    /**
+     * Main constructor where user can construct bloomfilter with desired bf size and num hfs
+     * @param bloomFilterSize Size of bloomfilter in bits
+     * @param numHashFunctions Number of hash functions each term should run through
+     */
+    public TermBloomFilter(int bloomFilterSize, int numHashFunctions) {
+<span class="fc" id="L31">        super(bloomFilterSize, numHashFunctions);</span>
+<span class="fc" id="L32">        this.termSet = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L33">    }</span>
+
+
+    /**
+     * Adds a term to the bloom filter
+     *
+     * @param key Term to add into the bloomfilter
+     */
+    @Override
+    public void addTerm(String key) {
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (key == null) { return; }</span>
+<span class="fc" id="L44">        super.addTerm(key);</span>
+<span class="fc" id="L45">        termSet.add(key);</span>
+<span class="fc" id="L46">    }</span>
+
+
+    /**
+     * Returns a hash set of terms in the bloomfilter
+     *
+     * @return Hash set of strings
+     */
+    public Set&lt;String&gt; getTerms() {
+<span class="fc" id="L55">        return this.termSet;</span>
+    }
+
+
+    /**
+     * Clears the bloom filter of all strings
+     */
+    @Override
+    public void clearBloomFilter() {
+<span class="fc" id="L64">        super.clearBloomFilter();</span>
+<span class="fc" id="L65">        this.termSet.clear();</span>
+<span class="fc" id="L66">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

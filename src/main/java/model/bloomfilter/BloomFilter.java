@@ -54,6 +54,13 @@ public interface BloomFilter {
 
 
     /**
+     * Determines if bloomfilter currently holds more or less than its optimal amount for .001 false positive rate
+     * @return True if more, false if less
+     */
+    boolean isFilled();
+
+
+    /**
      * Returns the total in-memory storage of bloomfilter in bits
      * @return Size of bloom filter
      */

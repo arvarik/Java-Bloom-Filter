@@ -9,11 +9,11 @@ import java.util.HashMap;
 
 import lombok.NonNull;
 import model.hflist.DefaultHashFunctionList;
+import model.hflist.MurmurHashFunctionList;
 import model.hflist.HashFunctionList;
 import model.hflist.HashType;
 
 import com.google.common.math.DoubleMath;
-import model.hflist.MurmurHashFunctionList;
 
 
 public class DefaultBloomFilter implements BloomFilter {
@@ -39,7 +39,7 @@ public class DefaultBloomFilter implements BloomFilter {
         this.numTerms = 0;
 
         this.bitVector = new BitSet(1400);
-        this.hashFunctionList = new DefaultHashFunctionList();
+        this.hashFunctionList = new MurmurHashFunctionList();
     }
 
 
@@ -62,7 +62,7 @@ public class DefaultBloomFilter implements BloomFilter {
         this.numHashFunctions = numHashFunctions;
 
         this.bitVector = new BitSet(bloomFilterSize);
-        this.hashFunctionList = new DefaultHashFunctionList(numHashFunctions);
+        this.hashFunctionList = new MurmurHashFunctionList(numHashFunctions);
     }
 
 
@@ -103,25 +103,36 @@ public class DefaultBloomFilter implements BloomFilter {
         setHashFunctionList(numHashFunctions, hashType);
     }
 
+    /**
+     * Helper method to set the hashfunctionlist based on the given input
+     * @param hashType Type of hash function to use
+     */
     private void setHashFunctionList(HashType hashType) {
         switch (hashType) {
             case DEFAULT:
                 this.hashFunctionList = new DefaultHashFunctionList();
+                break;
             case MURMUR:
                 this.hashFunctionList = new MurmurHashFunctionList();
+                break;
             default:
                 throw new IllegalArgumentException("HashType not valid");
         }
     }
 
+    /**
+     * Helper method to set the hashfunctionlist based on the given input
+     * @param numHashFunctions Number of hash functions to instantiate
+     * @param hashType Type of hash function to use
+     */
     private void setHashFunctionList(int numHashFunctions, HashType hashType) {
         switch (hashType) {
             case DEFAULT:
                 this.hashFunctionList = new DefaultHashFunctionList(numHashFunctions);
+                break;
             case MURMUR:
-                this.hashFunctionList = new DefaultHashFunctionList(numHashFunctions);
-                // Actual code is below
-                // this.hashFunctionList = new MurmurHashFunctionList(numHashFunctions);
+                this.hashFunctionList = new MurmurHashFunctionList(numHashFunctions);
+                break;
             default:
                 throw new IllegalArgumentException("HashType not valid");
         }
@@ -217,7 +228,7 @@ public class DefaultBloomFilter implements BloomFilter {
         if (key == null) {
             throw new IllegalArgumentException("String cannot be null");
         }
-        return this.hashFunctionList.getBoundedIntHashListFromString(key, this.bloomFilterSize);
+        return this.hashFunctionList.getBoundedIntHashListFromString(key, bloomFilterSize);
     }
 
 
@@ -232,6 +243,15 @@ public class DefaultBloomFilter implements BloomFilter {
 
 
         return stats;
+    }
+
+
+    public boolean isFilled() {
+        List<Integer> optimalBloomFilter = getOptimalSizeAndNumHfs(numTerms, 0.001);
+        if (bitVector.length() < optimalBloomFilter.get(0) || numHashFunctions < optimalBloomFilter.get(1)) {
+            return true;
+        }
+        return false;
     }
 
 

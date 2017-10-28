@@ -1,5 +1,7 @@
 package model.bloomfilter;
 
+import model.hflist.HashType;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,17 +20,46 @@ public class TermBloomFilter extends DefaultBloomFilter implements BloomFilter {
      */
     public TermBloomFilter() {
         super();
-        this.termSet = new HashSet<>();
+        setHashSet();
     }
 
 
     /**
-     * Main constructor where user can construct bloomfilter with desired bf size and num hfs
+     * Constructor where user can construct bloomfilter with desired bf size and num hfs
      * @param bloomFilterSize Size of bloomfilter in bits
      * @param numHashFunctions Number of hash functions each term should run through
      */
     public TermBloomFilter(int bloomFilterSize, int numHashFunctions) {
         super(bloomFilterSize, numHashFunctions);
+        setHashSet();
+    }
+
+
+    /**
+     * Constructor to create default term bloomfilter but with a given hashtype
+     * @param hashType Type of hash functions to use
+     */
+    public TermBloomFilter(HashType hashType) {
+        super(hashType);
+        setHashSet();
+    }
+
+
+    /**
+     * Main constructor to indicate desired size, num hfs, and hash type
+     * @param bloomFilterSize Size of bloomfilter in bits
+     * @param numHashFunctions Number of hash functions each term should run through
+     * @param hashType Type of hash functions to use
+     */
+    public TermBloomFilter(int bloomFilterSize, int numHashFunctions, HashType hashType) {
+        super(bloomFilterSize, numHashFunctions, hashType);
+        setHashSet();
+    }
+
+    /**
+     * Helper function to instantiate the termSet, critical component of term bloomfilter
+     */
+    private void setHashSet() {
         this.termSet = new HashSet<>();
     }
 

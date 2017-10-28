@@ -2,12 +2,17 @@ import com.google.common.base.Charsets;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
+import model.bloomfilter.BloomFilter;
+import model.bloomfilter.DefaultBloomFilter;
 import model.bloomfilter.TermBloomFilter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+
+import static model.hflist.HashType.DEFAULT;
+import static model.hflist.HashType.MURMUR;
 
 
 public class Main {
@@ -39,22 +44,29 @@ public class Main {
         bloomFilter.addTerm("Hello");
         bloomFilter.addTerm("Arvind");
 
-        System.out.println(printHashSet(bloomFilter.getTerms()));
+        System.out.println(printHashSet(bloomFilter.getTerms()) + "\n");
 
         // ***************************************************************************************** //
 
 
+        // Test 3 : Testing DEFAULT/MURMUR BloomFilter
+        BloomFilter myDefaultBloomFilter = new DefaultBloomFilter(DEFAULT);
+        BloomFilter myMurmurBloomFilter = new DefaultBloomFilter(1000, 6, MURMUR);
+
+        System.out.println(printList(myDefaultBloomFilter.getBitIndices("hello")));
+        System.out.println(printList(myMurmurBloomFilter.getBitIndices("hello")));
+
     }
 
-    private static String printHashSet(Set<String> list) {
+    private static String printHashSet(Set<String> hashSet) {
 
-        if (list.size() == 0) {
+        if (hashSet.size() == 0) {
             return "{}";
         }
 
         List<String> sortedList = new ArrayList<>();
 
-        for (String item : list) {
+        for (String item : hashSet) {
             sortedList.add(item);
         }
 
@@ -64,6 +76,21 @@ public class Main {
 
         for (String item : sortedList) {
             printList += item + ", ";
+        }
+
+        return printList.substring(0, printList.length() - 2) + "}";
+    }
+
+
+    private static String printList(List<Integer> list) {
+        if (list.size() == 0) {
+            return "{}";
+        }
+
+        String printList = "{";
+
+        for (Integer item : list) {
+            printList += Integer.toString(item) + ", ";
         }
 
         return printList.substring(0, printList.length() - 2) + "}";

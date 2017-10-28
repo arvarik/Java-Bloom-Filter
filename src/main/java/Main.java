@@ -16,6 +16,7 @@ public class Main {
 
         // TODO: Use RandomStringUtils from Apache commons and java.lang.instrumentation for size testing
         // TODO: Do a performance test here that tests speed of containment compared to an ArrayList
+        //       Performance test uses nanoTime class
         // TODO: Do a size test here that shows the disparity in size between BF and HashMap
 
 

@@ -7,6 +7,7 @@ import java.util.Random;
 import com.google.common.base.Charsets;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
+import lombok.NonNull;
 
 
 /**
@@ -14,6 +15,7 @@ import com.google.common.hash.Hashing;
  */
 public class DefaultHashFunctionList implements HashFunctionList {
 
+    @NonNull
     private List<HashFunction> hashFunctionList;
 
     /**

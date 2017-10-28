@@ -26,15 +26,17 @@ dependencies {
     // This dependency is found on compile classpath of this component and consumers.
     compile 'com.google.guava:guava:22.0'
 
-    // Use JUnit test framework
+    // Use JUnit test framework and Mockito
     testCompile 'junit:junit:4.12'
-
-    // Google Guice
-    compile 'com.google.inject:guice:4.1.0'
+    testCompile "org.mockito:mockito-core:1.+"
 
     // Log4j2
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.9.1'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.9.1'
+    compile 'org.slf4j:slf4j-api:1.7.12'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.16.18'
 }
 
 jacoco {
@@ -52,6 +54,7 @@ jacocoTestReport {
         csv.enabled false
         html.destination file("${buildDir}/jacocoHtml")
     }
+
 }
 
 test {

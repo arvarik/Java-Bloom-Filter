@@ -7,7 +7,7 @@ import java.util.BitSet;
 import java.util.Map;
 import java.util.HashMap;
 
-
+import lombok.NonNull;
 import model.hflist.DefaultHashFunctionList;
 import model.hflist.HashFunctionList;
 import model.hflist.HashType;
@@ -24,6 +24,7 @@ public class DefaultBloomFilter implements BloomFilter {
 
     private BitSet bitVector;       // Bit vector of bloomfilter
 
+    @NonNull
     private HashFunctionList hashFunctionList;  // List of hash functions
 
 
@@ -74,18 +75,9 @@ public class DefaultBloomFilter implements BloomFilter {
         this.bloomFilterSize = 1400;
         this.numHashFunctions = 10;
         this.numTerms = 0;
-
         this.bitVector = new BitSet(1400);
 
-        switch (hashType) {
-            case DEFAULT:
-                this.hashFunctionList = new DefaultHashFunctionList();
-            case MURMUR:
-                this.hashFunctionList = new MurmurHashFunctionList();
-            default:
-                throw new IllegalArgumentException("HashType not valid");
-        }
-
+        setHashFunctionList(hashType);
     }
 
 
@@ -106,9 +98,23 @@ public class DefaultBloomFilter implements BloomFilter {
 
         this.bloomFilterSize = bloomFilterSize;
         this.numHashFunctions = numHashFunctions;
-
         this.bitVector = new BitSet(bloomFilterSize);
 
+        setHashFunctionList(numHashFunctions, hashType);
+    }
+
+    private void setHashFunctionList(HashType hashType) {
+        switch (hashType) {
+            case DEFAULT:
+                this.hashFunctionList = new DefaultHashFunctionList();
+            case MURMUR:
+                this.hashFunctionList = new MurmurHashFunctionList();
+            default:
+                throw new IllegalArgumentException("HashType not valid");
+        }
+    }
+
+    private void setHashFunctionList(int numHashFunctions, HashType hashType) {
         switch (hashType) {
             case DEFAULT:
                 this.hashFunctionList = new DefaultHashFunctionList(numHashFunctions);

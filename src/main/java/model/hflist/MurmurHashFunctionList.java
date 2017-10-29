@@ -44,8 +44,7 @@ public class MurmurHashFunctionList implements HashFunctionList {
         if (size < 1) {
             throw new IllegalArgumentException("Number of hash functions should be greater than 0");
         }
-        // TODO: REFACTOR! DefaultHashFunctionList has max size of all hash-functions, all diff types of hfs
-        // TODO: New class MurmurHashFunctionList which is exactly as this class is now
+
         Random rn = new Random();
         for (int i = 0; i < size; i++) {
             hashFunctionList.add(Hashing.murmur3_32(rn.nextInt()));

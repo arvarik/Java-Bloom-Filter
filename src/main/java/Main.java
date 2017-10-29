@@ -1,15 +1,8 @@
-import com.google.common.base.Charsets;
-import com.google.common.hash.HashCode;
-import com.google.common.hash.HashFunction;
-import com.google.common.hash.Hashing;
 import model.bloomfilter.BloomFilter;
 import model.bloomfilter.DefaultBloomFilter;
 import model.bloomfilter.TermBloomFilter;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static model.hflist.HashType.DEFAULT;
 import static model.hflist.HashType.MURMUR;
@@ -25,14 +18,12 @@ public class Main {
         // TODO: Do a size test here that shows the disparity in size between BF and HashMap
 
 
-        // TEST 1 : Testing out Google Guavas hashing capabilities
-        HashFunction hf = Hashing.murmur3_32(2);
+        // Test 3 : Testing DEFAULT/MURMUR BloomFilter
+        BloomFilter myDefaultBloomFilter = new DefaultBloomFilter(DEFAULT);
+        BloomFilter myMurmurBloomFilter = new DefaultBloomFilter(1000, 6, MURMUR);
 
-        HashCode hc = hf.newHasher()
-                .putString("Arvind", Charsets.UTF_8)
-                .hash();
-
-        System.out.printf("Hash1 of 'Arvind' as int (SEED 2): %d\n\n", hc.asInt());
+        System.out.println(printList(myDefaultBloomFilter.getBitIndices("hello")));
+        System.out.println(printList(myMurmurBloomFilter.getBitIndices("hello")) + "\n");
 
         // ***************************************************************************************** //
 
@@ -43,20 +34,42 @@ public class Main {
         bloomFilter.addTerm("Hi");
         bloomFilter.addTerm("Hello");
         bloomFilter.addTerm("Arvind");
+        bloomFilter.addTerm("Arikatla");
+        bloomFilter.addTerm("Java");
+        bloomFilter.addTerm("IntelliJ");
 
         System.out.println(printHashSet(bloomFilter.getTerms()) + "\n");
+        System.out.println(printHashMap(bloomFilter.getBloomFilterStats()));
 
         // ***************************************************************************************** //
 
 
-        // Test 3 : Testing DEFAULT/MURMUR BloomFilter
-        BloomFilter myDefaultBloomFilter = new DefaultBloomFilter(DEFAULT);
-        BloomFilter myMurmurBloomFilter = new DefaultBloomFilter(1000, 6, MURMUR);
 
-        System.out.println(printList(myDefaultBloomFilter.getBitIndices("hello")));
-        System.out.println(printList(myMurmurBloomFilter.getBitIndices("hello")));
 
     }
+
+    private static String printHashMap(Map<String, String> hashMap) {
+        if (hashMap.size() == 0) {
+            return "{}";
+        }
+
+        List<String> sortedKeys = new ArrayList<>();
+
+        for (String item : hashMap.keySet()) {
+            sortedKeys.add(item);
+        }
+
+        Collections.sort(sortedKeys);
+
+        String printList = "";
+
+        for (String item : sortedKeys) {
+            printList += item + " : " + hashMap.get(item) + "\n";
+        }
+
+        return printList;
+    }
+
 
     private static String printHashSet(Set<String> hashSet) {
 

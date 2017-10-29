@@ -147,7 +147,7 @@ public class DefaultBloomFilter implements BloomFilter {
      * @return A list of size two with optimal bloomfilter size and number of hash functions
      */
     public List<Integer> getOptimalSizeAndNumHfs(int expectedNumTerms, double desiredFalsePositive) {
-        if (expectedNumTerms < 5) {
+        if (expectedNumTerms < 3) {
             throw new IllegalArgumentException("Expected number of terms must be 5 or greater");
         }
 
@@ -238,11 +238,20 @@ public class DefaultBloomFilter implements BloomFilter {
      * @return Hash map of statistic name and its associated value
      */
     public Map<String, String> getBloomFilterStats() {
-        // TODO: Write list of good stats and implement
         Map<String, String> stats = new HashMap<>();
-
-
+        stats.put("1) Size of BloomFilter in bits", Integer.toString(getBloomFilterSize()));
+        stats.put("2) Number of hash functions used", Integer.toString(getNumHashFunctions()));
+        stats.put("3) Number of terms in BloomFilter", Integer.toString(getNumTerms()));
+        stats.put("4) Is the BloomFilter filled? (.001 FPR)", Boolean.toString(isFilled()));
+        if (!isFilled()) {
+            stats.put("5) Approximate number of terms until filled", Integer.toString(getNumTermsToFill()));
+        }
         return stats;
+    }
+
+    public int getNumTermsToFill() {
+        double expectedNumTerms = getBloomFilterSize() / (1.44 * getNumHashFunctions());
+        return (int) expectedNumTerms - getNumTerms();
     }
 
 
